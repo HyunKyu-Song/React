@@ -6,7 +6,7 @@ function App() {
 
   let post = '치킨 맛집';
   let [글제목, 제목변경] = useState(['치킨 맛집 추천', '햄버거 맛집 추천', '피자 맛집 추천']);
-  let [좋아요갯수, 갯수변경] = useState([1, 2, 3]);
+  let [좋아요갯수, 갯수변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
   let [btn, setBtn] = useState('Modal open');
 
@@ -20,14 +20,20 @@ function App() {
         글제목.map(function (data, i) {
           return (
             <div className='list' key={i}>
-              <h4>{data}<span onClick={function(e){
-                let copy = [...좋아요갯수];
-                //갯수변경(copy[i]++);
-                console.log(e.target);
-                console.log(copy);
-                갯수변경(copy[i]);
-              }}> ❤ </span>{좋아요갯수[i]}
+              <h4 onClick={() => {
+                if (modal == false) {
+                  setModal(true);
+                }
+                else {
+                  setModal(false);
+                }
+              }}>{data}
               </h4>
+              <span onClick={() => {
+                let copy = [...좋아요갯수];
+                copy[i] += 1
+                갯수변경(copy);
+              }}> ❤ </span> {좋아요갯수[i]}
               <p>9월 29일 발행</p>
             </div>
           )
@@ -47,7 +53,7 @@ function App() {
         <p>9월 29일 발행</p>
       </div> */}
 
-      <button onClick={() => {
+      {/* <button onClick={() => {
         if (modal == false) {
           setModal(true);
           setBtn('Modal close');
@@ -56,9 +62,10 @@ function App() {
           setModal(false);
           setBtn('Modal open');
         }
-      }}>{btn}</button>
+      }}>{btn}</button> */}
+
       {
-        modal == true ? <Modal></Modal> : null
+        modal == true ? <Modal color="yellow" 글제목={ 글제목 }/> : null
       }
 
       <br></br>
@@ -77,12 +84,13 @@ function App() {
   );
 }
 
-function Modal() {
+function Modal(props) {
   return (
-    <div className='modal'>
-      <h4>제목</h4>
+    <div className='modal' style={{backgroundColor:props.color}}>
+      <h4>{ props.글제목[0] }</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button>버튼</button>
     </div>
   )
 }

@@ -27,6 +27,10 @@ div{
   border-bottom: 1px solid grey;
 }
 
+.list h4{
+  display: inline-block;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
