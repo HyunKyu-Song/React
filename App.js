@@ -8,7 +8,8 @@ function App() {
   let [글제목, 제목변경] = useState(['치킨 맛집 추천', '햄버거 맛집 추천', '피자 맛집 추천']);
   let [좋아요갯수, 갯수변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
-  let [btn, setBtn] = useState('Modal open');
+  //let [btn, setBtn] = useState('Modal open');
+  let [title, setTitle] = useState(1);
 
   return (
     <div className="App">
@@ -23,6 +24,7 @@ function App() {
               <h4 onClick={() => {
                 if (modal == false) {
                   setModal(true);
+                  setTitle(i);
                 }
                 else {
                   setModal(false);
@@ -65,7 +67,7 @@ function App() {
       }}>{btn}</button> */}
 
       {
-        modal == true ? <Modal color="yellow" 글제목={ 글제목 }/> : null
+        modal == true ? <Modal color="coral" 글제목={ 글제목 } 제목변경={ 제목변경 } title={ title }/> : null
       }
 
       <br></br>
@@ -87,10 +89,14 @@ function App() {
 function Modal(props) {
   return (
     <div className='modal' style={{backgroundColor:props.color}}>
-      <h4>{ props.글제목[0] }</h4>
+      <h4>{ props.글제목[props.title] }</h4>
       <p>날짜</p>
       <p>상세내용</p>
-      <button>버튼</button>
+      <button onClick={()=>{
+        let copy = [...props.글제목];
+        copy[0] = '치킨';
+        props.제목변경(copy);
+      }}>글수정</button>
     </div>
   )
 }
