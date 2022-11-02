@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
+import { Navbar, Container, Nav, Row, Col, Alert } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './detail.js';
+import axios from 'axios';
+
 
 function App() {
 
   let [shoes, shoesSet] = useState(data);
   let navigate = useNavigate();
+  let [cnt, cntSet] = useState(2);
+  let [danger, dangerSet] = useState(false);
 
   return (
     <div className="App">
@@ -18,7 +22,7 @@ function App() {
             <Link className='link' to="/">아이돌 굿즈샵</Link>
           </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link onClick={() => { navigate('/detail') }}>상세페이지</Nav.Link>
+            {/* <Nav.Link onClick={() => { navigate('/detail') }}>상세페이지</Nav.Link> */}
             <Nav.Link onClick={() => { navigate('/fromis') }}>프로미스나인</Nav.Link>
             <Nav.Link onClick={() => { navigate('/lesserafim') }}>르세라핌</Nav.Link>
             <Nav.Link onClick={() => { navigate('/ive') }}>아이브</Nav.Link>
@@ -37,12 +41,20 @@ function App() {
                 {
                   shoes.map(function (i, j) {
                     return (
-                      <Goods shoes={shoes[j]} num={j + 1}></Goods>
+                      <Goods shoes={shoes[j]}></Goods>
                     )
                   })
                 }
               </Row>
             </Container>
+
+            {
+              danger == true ?
+                <Alert variant='danger'>
+                  더이상 상품이 없습니다.
+                </Alert> : null
+            }
+
             <button onClick={() => {
               let copy = [...shoes];
               copy = copy.sort((a, b) => {
@@ -53,10 +65,32 @@ function App() {
                 return 0;
               });
               shoesSet(copy);
-            }}>가나다순</button>
+            }}>가나다순</button><br></br>
+            <button onClick={() => {
+              cntSet(cnt + 1);
+              if (cnt == 4) {
+                dangerSet(true);
+              }
+              else if(cnt == 5){
+                dangerSet(false);
+                cntSet(4);
+              }
+              else {
+                axios.get(`https://codingapple1.github.io/shop/data${cnt}.json`)
+                  .then((result) => {
+                    console.log(result.data);
+                    console.log(cnt);
+                    let copy = [...shoes, ...result.data];
+                    shoesSet(copy);
+                  })
+                  .catch(() => {
+                    console.log('실패함');
+                  })
+              }
+            }}>더보기</button>
           </>
         } />
-        <Route path="/detail" element={<Detail shoes={shoes}></Detail>} />
+        {/* <Route path="/detail" element={<Detail shoes={shoes}></Detail>} /> */}
         <Route path="/detail/:id" element={<Detail shoes={shoes}></Detail>} />
         <Route path="/fromis" element={<div>프로미스나인</div>} />
         <Route path="/lesserafim" element={<div>르세라핌</div>} />
@@ -78,7 +112,9 @@ function App() {
 function Goods(props) {
   return (
     <Col>
-      <img src={`https://codingapple1.github.io/shop/shoes${props.num}.jpg`} style={{ width: '80%' }}></img>
+      <Link to={`/detail/${props.shoes.id}`}>
+        <img src={`https://codingapple1.github.io/shop/shoes${props.shoes.id + 1}.jpg`} style={{ width: '80%' }}></img>
+      </Link>
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.content}</p>
       <p>{props.shoes.price}</p>

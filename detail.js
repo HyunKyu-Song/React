@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
-import { Alert } from 'react-bootstrap';
+import { Alert, Nav } from 'react-bootstrap';
 
 
 // let CoralBtn = styled.button`
@@ -23,6 +23,7 @@ function Detail(props) {
    let [danger, dangerSet] = useState(false);
    let { id } = useParams();
    let [val, valSet] = useState('');
+   let [tap, tapSet] = useState(2);
 
    useEffect(() => {
       //mount, update시 여기 코드 실행됨
@@ -34,12 +35,12 @@ function Detail(props) {
       if (isNaN(val) === true) {
          dangerSet(true);
       }
-      else{
+      else {
          dangerSet(false);
       }
-      
+
       return () => { clearTimeout(timer) }
-   },[val])
+   }, [val])
 
    return (
       <div className="container">
@@ -57,7 +58,7 @@ function Detail(props) {
                   </Alert> : null
             }
             <button onClick={() => { cntSet(cnt + 1) }}>cnt {cnt}</button>
-            <input onChange={(e) => { valSet(e.target.value) } }></input>
+            <input onChange={(e) => { valSet(e.target.value) }}></input>
             {/* <Box>
                <CoralBtn bg='coral'>버튼</CoralBtn>
             </Box> */}
@@ -71,8 +72,46 @@ function Detail(props) {
                <button className="btn btn-danger">주문하기</button>
             </div>
          </div>
+         <Nav variant="tabs" defaultActiveKey="link-0">
+            <Nav.Item>
+               <Nav.Link eventKey="link-0">버튼0</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+               <Nav.Link eventKey="link-1">버튼1</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+               <Nav.Link eventKey="link-2">버튼2</Nav.Link>
+            </Nav.Item>
+         </Nav>
+
+         <TapConnect tap={tap} tapSet={tapSet}></TapConnect>
       </div>
    )
+}
+
+function TapConnect(props) {
+   if (props.tap == 0) {
+      return (
+         <div>내용1
+            {props.tapSet(0)}
+         </div>
+      )
+   }
+   else if (props.tap == 1) {
+      return (
+         <div>내용2
+            {props.tapSet(1)}
+         </div>
+      )
+   }
+   else if (props.tap == 2) {
+      return (
+         <div>내용3
+            {props.tapSet(2)}
+         </div>
+      )
+   }
+
 }
 
 export default Detail;
