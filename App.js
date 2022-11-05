@@ -71,7 +71,7 @@ function App() {
               if (cnt == 4) {
                 dangerSet(true);
               }
-              else if(cnt == 5){
+              else if (cnt == 5) {
                 dangerSet(false);
                 cntSet(4);
               }

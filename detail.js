@@ -23,7 +23,15 @@ function Detail(props) {
    let [danger, dangerSet] = useState(false);
    let { id } = useParams();
    let [val, valSet] = useState('');
-   let [tap, tapSet] = useState(2);
+   let [tap, tapSet] = useState(0);
+   let [fade, fadeSet] = useState('');
+
+   useEffect(() => {
+      setTimeout(() => { fadeSet('end') }, 100);
+      return () => {
+         fadeSet('');
+      }
+   }, [])
 
    useEffect(() => {
       //mount, update시 여기 코드 실행됨
@@ -43,7 +51,7 @@ function Detail(props) {
    }, [val])
 
    return (
-      <div className="container">
+      <div className={`container start ${fade}`}>
          <div className="row">
             {
                alert == true ?
@@ -74,44 +82,41 @@ function Detail(props) {
          </div>
          <Nav variant="tabs" defaultActiveKey="link-0">
             <Nav.Item>
-               <Nav.Link eventKey="link-0">버튼0</Nav.Link>
+               <Nav.Link eventKey="link-0" onClick={() => { tapSet(0) }}>버튼0</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-               <Nav.Link eventKey="link-1">버튼1</Nav.Link>
+               <Nav.Link eventKey="link-1" onClick={() => { tapSet(1) }}>버튼1</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-               <Nav.Link eventKey="link-2">버튼2</Nav.Link>
+               <Nav.Link eventKey="link-2" onClick={() => { tapSet(2) }}>버튼2</Nav.Link>
             </Nav.Item>
          </Nav>
 
-         <TapConnect tap={tap} tapSet={tapSet}></TapConnect>
+         <TapContent tap={tap} shoes={props.shoes}></TapContent>
       </div>
    )
 }
 
-function TapConnect(props) {
-   if (props.tap == 0) {
-      return (
-         <div>내용1
-            {props.tapSet(0)}
-         </div>
-      )
-   }
-   else if (props.tap == 1) {
-      return (
-         <div>내용2
-            {props.tapSet(1)}
-         </div>
-      )
-   }
-   else if (props.tap == 2) {
-      return (
-         <div>내용3
-            {props.tapSet(2)}
-         </div>
-      )
-   }
+function TapContent({ tap, shoes }) {
+   let [fade, fadeSet] = useState('');
 
+   useEffect(() => {
+      setTimeout(() => { fadeSet('end') }, 200);
+      return () => {
+         fadeSet('');
+      }
+   }, [tap])
+
+   return (
+      <div className={`start ${fade}`}>
+         {
+            [<div>{shoes[tap].title}</div>,
+            <div>{shoes[tap].title}</div>,
+            <div>{shoes[tap].title}</div>
+            ][tap]
+         }
+      </div>
+   )
 }
 
 export default Detail;
