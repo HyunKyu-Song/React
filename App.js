@@ -3,8 +3,9 @@ import { Navbar, Container, Nav, Row, Col, Alert } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Detail from './detail.js';
+import Detail from './routes/Detail.js';
 import axios from 'axios';
+import Cart from './routes/Cart.js';
 
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
         <Route path="/lesserafim" element={<div>르세라핌</div>} />
         <Route path="/ive" element={<div>아이브</div>} />
         <Route path="*" element={<div>없는 페이지입니다.</div>} />
+        <Route path='/cart' element={<Cart></Cart>} />
 
         {/* <Route path="/idol" element={<div>아이돌 <Outlet></Outlet></div>} >
           <Route path="fromis" element={<div>프로미스나인</div>} />
