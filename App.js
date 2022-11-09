@@ -27,6 +27,7 @@ function App() {
             <Nav.Link onClick={() => { navigate('/fromis') }}>프로미스나인</Nav.Link>
             <Nav.Link onClick={() => { navigate('/lesserafim') }}>르세라핌</Nav.Link>
             <Nav.Link onClick={() => { navigate('/ive') }}>아이브</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart') }}>장바구니</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
