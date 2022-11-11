@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
-import { cntInc, cntDec } from './store/userSlice.js'
+import goods from './store/userSlice.js'
 
 let user = createSlice({
    name: 'user',
@@ -10,7 +10,6 @@ let user = createSlice({
       }
    }
 })
-
 export let { changeName } = user.actions
 
 export default configureStore({

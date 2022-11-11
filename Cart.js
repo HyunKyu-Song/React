@@ -1,38 +1,52 @@
+import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeName } from '../store.js';
+import { cntInc, cntDec, nameSort } from '../store/userSlice.js';
 
 function Cart() {
-   let a = useSelector((state)=>{return state})
-   console.log(a.stack)
+   let state = useSelector((state) => { return state })
+   let dispatch = useDispatch()
+   console.log(state.user)
    return (
       <div>
+         <div>
+            {state.user}의 장바구니
+            <button onClick={() => {
+               dispatch(nameSort());
+            }}> 이름순</button>
+         </div>
+
          <Table striped bordered hover>
             <thead>
                <tr>
                   <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
+                  <th>상품명</th>
+                  <th>수량</th>
+                  <th>변경하기</th>
                </tr>
             </thead>
             <tbody>
-               <tr>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-               </tr>
-               <tr>
-                  <td>2</td>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-               </tr>
-               <tr>
-                  <td>3</td>
-                  <td colSpan={2}>Larry the Bird</td>
-                  <td>@twitter</td>
-               </tr>
+               {
+                  state.goods.map(function (a, i) {
+                     return (
+                        <tr key={i}>
+                           <td>{state.goods[i].id}</td>
+                           <td>{state.goods[i].name}</td>
+                           <td>{state.goods[i].count}</td>
+                           <td><button onClick={() => {
+                              console.log(i);
+                              console.log(state.goods[i].id);
+                              if (i === state.goods[i].id) {
+                                 dispatch(cntInc(i))
+                              }
+                           }}>+</button> <button onClick={() => {
+                              dispatch(cntDec(i))
+                           }}>-</button></td>
+                        </tr>
+                     )
+                  })
+               }
             </tbody>
          </Table>
       </div>

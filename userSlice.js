@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 let goods = createSlice({
    name: 'goods',
@@ -12,8 +12,16 @@ let goods = createSlice({
       },
       cntDec(state, i){
          state[i.payload].count -= 1;
+      },
+      nameSort(state){
+         state.map(function(a, i){
+            let copy = [...state];
+            copy = copy[i].name;
+            state = copy.sort();
+         })
       }
    }
 })
+export let { cntInc, cntDec, nameSort } = goods.actions
 
-export let { cntInc, cntDec } = goods.actions
+export default goods
