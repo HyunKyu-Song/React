@@ -14,6 +14,7 @@ function App() {
   let navigate = useNavigate();
   let [cnt, cntSet] = useState(2);
   let [danger, dangerSet] = useState(false);
+  let [arr, arrSet] = useState(['']);
 
   return (
     <div className="App">
@@ -37,13 +38,25 @@ function App() {
         <Route path="/" element={
           <>
             <div className='main-bg'></div>
+            <div>
+              [ 최근 본 상품 ]
+              <p>이거 왜 이럼? {arr[0]}</p>
 
+            </div>
             <Container>
               <Row>
                 {
                   shoes.map(function (i, j) {
                     return (
-                      <Goods shoes={shoes[j]}></Goods>
+                      // <button onClick={() => {
+                      //   let copy = [...arr];
+                      //   copy = copy.push(i[j].id);
+                      //   arrSet(copy);
+                      //   console.log(1);
+                      //   console.log(arr);
+                      // }}>
+                        <Goods shoes={shoes[j]}></Goods>
+                      // </button>
                     )
                   })
                 }
