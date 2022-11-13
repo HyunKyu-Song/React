@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Row, Col, Alert } from 'react-bootstrap';
 import './App.css';
 import data from './data.js';
@@ -9,6 +9,10 @@ import Cart from './routes/Cart.js';
 
 
 function App() {
+
+  useEffect(() => {
+    localStorage.setItem('watched', JSON.stringify([]));
+  }, [])
 
   let [shoes, shoesSet] = useState(data);
   let navigate = useNavigate();
@@ -39,9 +43,19 @@ function App() {
           <>
             <div className='main-bg'></div>
             <div>
-              [ 최근 본 상품 ]
-              <p>이거 왜 이럼? {arr[0]}</p>
-
+              <button onClick={() => {
+                let copy = localStorage.getItem('watched');
+                copy = JSON.parse(copy);
+                copy.push(1);
+                copy.push(7);
+                copy.push(2);
+                copy = JSON.stringify(copy);
+                localStorage.setItem('watched', copy);
+              }}>[ 최근 본 상품 ]
+                {
+                  console.log(JSON.parse(localStorage.getItem('watched')))
+                }
+              </button>
             </div>
             <Container>
               <Row>
@@ -55,7 +69,7 @@ function App() {
                       //   console.log(1);
                       //   console.log(arr);
                       // }}>
-                        <Goods shoes={shoes[j]}></Goods>
+                      <Goods shoes={shoes[j]}></Goods>
                       // </button>
                     )
                   })
